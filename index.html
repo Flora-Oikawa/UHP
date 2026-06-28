@@ -1,0 +1,732 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Yunhan Wang — UHP Signature Work</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        serif: ['Times New Roman', 'Times', 'serif'],
+                        sans: ['Times New Roman', 'Times', 'serif'], // Force Times New Roman globally for academic layout
+                    },
+                    colors: {
+                        morandi: {
+                            50: '#f7f6f3',   // Chalk white body background
+                            100: '#e9eae5',  // Fog grey / soft linen
+                            200: '#dadcd5',  // Clay grey
+                            300: '#c5c8be',
+                            blue: '#7e8e9f', // Mist Blue (Primary Accent)
+                            blueDark: '#5c6c7c',
+                            rose: '#b89c9c', // Dusty Rose (Secondary Accent)
+                            roseDark: '#9e7b7b', // Elegant Wine-like Morandi Red for Cursor & Details
+                            sage: '#8f978f', // Soft Muted Green
+                            slate: '#3c4043', // Low contrast graphite for reading comfort
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        /* CSS resets & reading optimizations */
+        html {
+            scroll-behavior: smooth;
+        }
+        body {
+            cursor: none; /* Hide default cursor to render custom Morandi Wine/Rose cursor */
+            background-color: #f7f6f3;
+            font-family: 'Times New Roman', Times, serif;
+            color: #3c4043;
+        }
+        /* Custom Fine Selection to fit the Morandi palette */
+        ::selection {
+            background-color: rgba(184, 156, 156, 0.25);
+            color: #9e7b7b;
+        }
+        
+        /* Fine, minimalist scrollbar */
+        ::-webkit-scrollbar {
+            width: 4px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #f7f6f3;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #dadcd5;
+            border-radius: 2px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #b89c9c;
+        }
+
+        /* Morandi Rose/Wine custom pointer */
+        #custom-cursor {
+            width: 6px;
+            height: 6px;
+            background-color: #9e7b7b;
+            border-radius: 50%;
+            position: fixed;
+            transform: translate(-50%, -50%);
+            pointer-events: none;
+            z-index: 9999;
+            transition: width 0.2s, height 0.2s, background-color 0.2s;
+        }
+        #custom-cursor-ring {
+            width: 24px;
+            height: 24px;
+            border: 1px solid rgba(158, 123, 123, 0.4);
+            border-radius: 50%;
+            position: fixed;
+            transform: translate(-50%, -50%);
+            pointer-events: none;
+            z-index: 9998;
+            transition: transform 0.1s ease-out;
+        }
+
+        /* High-transparency elegant Morandi Glassmorphism */
+        .glass-nav {
+            background: rgba(247, 246, 243, 0.8);
+            backdrop-filter: blur(15px);
+            -webkit-backdrop-filter: blur(15px);
+            border-bottom: 1px solid rgba(218, 220, 213, 0.4);
+        }
+        
+        .glass-card {
+            background: rgba(255, 255, 255, 0.45);
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+            border: 1px solid rgba(218, 220, 213, 0.5);
+        }
+
+        .glass-dropdown {
+            background: rgba(255, 255, 255, 0.92);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid rgba(218, 220, 213, 0.8);
+            box-shadow: 0 10px 25px -10px rgba(92, 108, 124, 0.1);
+        }
+    </style>
+</head>
+<body class="antialiased min-h-screen flex flex-col justify-between tracking-wide font-light">
+
+    <!-- Custom Pointer Elements -->
+    <div id="custom-cursor"></div>
+    <div id="custom-cursor-ring"></div>
+
+    <!-- Top Fixed Glassmorphic Navigation Header -->
+    <header class="fixed top-0 left-0 w-full z-50 glass-nav transition-all duration-300">
+        <div class="max-w-5xl mx-auto px-6 h-20 flex items-center justify-between">
+            <!-- Brand / Logo (Academic Style) -->
+            <a href="#about" class="flex flex-col items-start group">
+                <span class="text-base tracking-[0.2em] text-morandi-slate group-hover:text-morandi-roseDark transition-colors duration-300 font-normal">YUNHAN WANG</span>
+                <span class="text-[9px] tracking-[0.25em] text-morandi-blueDark/60 uppercase">UHP Signature Work — Portfolio</span>
+            </a>
+
+            <!-- Desktop Hover-dropdown Navigation Menu -->
+            <nav class="hidden lg:flex items-center space-x-12 text-xs tracking-[0.25em] uppercase text-morandi-blueDark/80">
+                
+                <!-- About Me Tab -->
+                <div class="relative group py-6">
+                    <a href="#about" class="hover:text-morandi-roseDark transition-colors duration-300 flex items-center space-x-1.5">
+                        <span>About Me</span>
+                        <svg class="w-2.5 h-2.5 text-morandi-blue/60 group-hover:text-morandi-roseDark transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M19 9l-7 7-7-7"></path></svg>
+                    </a>
+                    <!-- Hover Dropdown Menu with Dropdown Text -->
+                    <div class="absolute left-1/2 -translate-x-1/2 top-[76px] w-64 glass-dropdown rounded p-5 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 z-50">
+                        <p class="text-[9px] text-morandi-rose tracking-[0.2em] mb-3 border-b border-morandi-100 pb-1.5 uppercase">Sections</p>
+                        <div class="flex flex-col space-y-3">
+                            <a href="#about-intro" class="hover:text-morandi-roseDark normal-case tracking-wide text-morandi-slate font-light flex items-center space-x-2">
+                                <span class="w-1 h-1 bg-morandi-rose rounded-full"></span>
+                                <span>Academic Background</span>
+                            </a>
+                            <a href="#about-interests" class="hover:text-morandi-roseDark normal-case tracking-wide text-morandi-slate font-light flex items-center space-x-2">
+                                <span class="w-1 h-1 bg-morandi-rose rounded-full"></span>
+                                <span>Research Core Focus</span>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Process Tab -->
+                <div class="relative group py-6">
+                    <a href="#process" class="hover:text-morandi-roseDark transition-colors duration-300 flex items-center space-x-1.5">
+                        <span>Process</span>
+                        <svg class="w-2.5 h-2.5 text-morandi-blue/60 group-hover:text-morandi-roseDark transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M19 9l-7 7-7-7"></path></svg>
+                    </a>
+                    <div class="absolute left-1/2 -translate-x-1/2 top-[76px] w-64 glass-dropdown rounded p-5 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 z-50">
+                        <p class="text-[9px] text-morandi-rose tracking-[0.2em] mb-3 border-b border-morandi-100 pb-1.5 uppercase">Milestones</p>
+                        <div class="flex flex-col space-y-3">
+                            <a href="#proc-overview" class="hover:text-morandi-roseDark normal-case tracking-wide text-morandi-slate font-light flex items-center space-x-2">
+                                <span class="w-1 h-1 bg-morandi-rose rounded-full"></span>
+                                <span>Origins & Inception</span>
+                            </a>
+                            <a href="#proc-research" class="hover:text-morandi-roseDark normal-case tracking-wide text-morandi-slate font-light flex items-center space-x-2">
+                                <span class="w-1 h-1 bg-morandi-rose rounded-full"></span>
+                                <span>Preparation & Literature</span>
+                            </a>
+                            <a href="#proc-framework" class="hover:text-morandi-roseDark normal-case tracking-wide text-morandi-slate font-light flex items-center space-x-2">
+                                <span class="w-1 h-1 bg-morandi-rose rounded-full"></span>
+                                <span>Structuring the Thesis</span>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Product Tab -->
+                <div class="relative group py-6">
+                    <a href="#product" class="hover:text-morandi-roseDark transition-colors duration-300 flex items-center space-x-1.5">
+                        <span>Product</span>
+                        <svg class="w-2.5 h-2.5 text-morandi-blue/60 group-hover:text-morandi-roseDark transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M19 9l-7 7-7-7"></path></svg>
+                    </a>
+                    <div class="absolute left-1/2 -translate-x-1/2 top-[76px] w-64 glass-dropdown rounded p-5 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 z-50">
+                        <p class="text-[9px] text-morandi-rose tracking-[0.2em] mb-3 border-b border-morandi-100 pb-1.5 uppercase">Assets</p>
+                        <div class="flex flex-col space-y-3">
+                            <a href="#prod-paper" class="hover:text-morandi-roseDark normal-case tracking-wide text-morandi-slate font-light flex items-center space-x-2">
+                                <span class="w-1 h-1 bg-morandi-rose rounded-full"></span>
+                                <span>Complete Academic Thesis</span>
+                            </a>
+                            <a href="#prod-cv" class="hover:text-morandi-roseDark normal-case tracking-wide text-morandi-slate font-light flex items-center space-x-2">
+                                <span class="w-1 h-1 bg-morandi-rose rounded-full"></span>
+                                <span>Full Résumé (CV)</span>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Reflection Tab -->
+                <div class="relative group py-6">
+                    <a href="#reflection" class="hover:text-morandi-roseDark transition-colors duration-300 flex items-center space-x-1.5">
+                        <span>Reflection</span>
+                        <svg class="w-2.5 h-2.5 text-morandi-blue/60 group-hover:text-morandi-roseDark transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M19 9l-7 7-7-7"></path></svg>
+                    </a>
+                    <div class="absolute left-1/2 -translate-x-1/2 top-[76px] w-64 glass-dropdown rounded p-5 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 z-50">
+                        <p class="text-[9px] text-morandi-rose tracking-[0.2em] mb-3 border-b border-morandi-100 pb-1.5 uppercase">Review</p>
+                        <div class="flex flex-col space-y-3">
+                            <a href="#ref-positives" class="hover:text-morandi-roseDark normal-case tracking-wide text-morandi-slate font-light flex items-center space-x-2">
+                                <span class="w-1 h-1 bg-morandi-rose rounded-full"></span>
+                                <span>What I Would Retain</span>
+                            </a>
+                            <a href="#ref-changes" class="hover:text-morandi-roseDark normal-case tracking-wide text-morandi-slate font-light flex items-center space-x-2">
+                                <span class="w-1 h-1 bg-morandi-rose rounded-full"></span>
+                                <span>What I Would Enhance</span>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+            </nav>
+
+            <!-- Menu Button for Mobile Viewports -->
+            <div class="flex items-center space-x-4">
+                <button id="mobile-menu-btn" class="lg:hidden text-morandi-slate focus:outline-none p-1">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path id="menu-icon" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M4 6h16M4 12h16m-7 6h7"></path></svg>
+                </button>
+            </div>
+        </div>
+
+        <!-- Mobile Menu Drawer (Fallback) -->
+        <div id="mobile-menu" class="hidden lg:hidden bg-white border-b border-morandi-100 p-6 flex flex-col space-y-4 text-xs font-medium uppercase tracking-widest text-morandi-slate">
+            <a href="#about" class="mobile-link py-2 border-b border-morandi-50">About Me</a>
+            <a href="#process" class="mobile-link py-2 border-b border-morandi-50">Process</a>
+            <a href="#product" class="mobile-link py-2 border-b border-morandi-50">Product</a>
+            <a href="#reflection" class="mobile-link py-2">Reflection</a>
+        </div>
+    </header>
+
+    <!-- MAIN CENTERING CONTAINER -->
+    <main class="flex-grow pt-28 max-w-5xl mx-auto px-6 md:px-8 w-full space-y-28 pb-24">
+        
+        <!-- ================= PAGE 1: ABOUT ME ================= -->
+        <section id="about" class="space-y-10 scroll-mt-28">
+            <div class="border-b border-morandi-200 pb-4">
+                <p class="text-[10px] uppercase tracking-[0.25em] text-morandi-roseDark font-medium">Page 01</p>
+                <h1 class="text-3xl text-morandi-slate font-light mt-1">About Me</h1>
+            </div>
+
+            <!-- Academic Intro Grid -->
+            <div class="grid grid-cols-1 md:grid-cols-12 gap-8 items-start">
+                
+                <div class="md:col-span-8 space-y-6 text-morandi-slate/90 leading-relaxed font-light text-sm md:text-base">
+                    <div id="about-intro" class="space-y-4">
+                        <span class="inline-block text-[10px] uppercase tracking-widest bg-morandi-100 text-morandi-blueDark px-3 py-1 rounded-none">Introduction</span>
+                        <p>
+                            I am a fourth-year undergraduate student at the <strong class="text-morandi-blueDark font-normal">University of California, Davis</strong>, pursuing a degree in the College of Letters and Science. I entered UC Davis as a first-year admit and joined the <strong class="text-morandi-blueDark font-normal">University Honors Program (UHP)</strong> with the goal of completing a substantive independent research project before graduation.
+                        </p>
+                    </div>
+
+                    <div id="about-interests" class="space-y-4 pt-4">
+                        <span class="inline-block text-[10px] uppercase tracking-widest bg-morandi-100 text-morandi-blueDark px-3 py-1 rounded-none">Academic Interests</span>
+                        <p>
+                            My academic interests sit at the intersection of <strong class="text-morandi-roseDark font-normal">law, international business, and dispute resolution</strong>. Over the course of my undergraduate studies, I developed a particular interest in international arbitration, a field I was introduced to through coursework and extracurricular engagement with legal practice. This Signature Work project grew directly out of that interest, and represents my most sustained effort to engage with legal scholarship at a research level.
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Side Profile Academic Card with perfect right aligned text and wrapping -->
+                <div class="md:col-span-4 bg-white/70 border border-morandi-200/60 p-6 rounded-none space-y-6">
+                    <div class="space-y-2 pb-4 border-b border-morandi-100 text-center md:text-left">
+                        <h2 class="text-xl text-morandi-slate font-medium">Yunhan Wang</h2>
+                        <p class="text-[10px] uppercase tracking-wider text-morandi-rose">Flora | Economics & Stats</p>
+                    </div>
+                    <div class="space-y-3.5 text-xs text-morandi-slate/70">
+                        <div class="flex justify-between items-start space-x-4">
+                            <span class="shrink-0">University:</span>
+                            <span class="text-morandi-slate text-right">UC Davis</span>
+                        </div>
+                        <div class="flex justify-between items-start space-x-4">
+                            <span class="shrink-0">Honors:</span>
+                            <span class="text-morandi-slate font-medium text-right">University Honors Program</span>
+                        </div>
+                        <div class="flex justify-between items-start space-x-4">
+                            <span class="shrink-0">GPA:</span>
+                            <span class="text-morandi-roseDark font-bold text-right">3.95 / 4.0</span>
+                        </div>
+                        <div class="flex justify-between items-start space-x-4">
+                            <span class="shrink-0">Expected Grad:</span>
+                            <span class="text-morandi-slate text-right">Dec 2026</span>
+                        </div>
+                    </div>
+                    <div class="pt-2">
+                        <a href="mailto:volwang@ucdavis.edu" class="block w-full py-2 bg-morandi-blue hover:bg-morandi-roseDark text-white text-center text-xs tracking-widest uppercase transition-all duration-300 rounded-none">
+                            Contact Flora
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ================= PAGE 2: PROCESS ================= -->
+        <section id="process" class="space-y-10 scroll-mt-28">
+            <div class="border-b border-morandi-200 pb-4">
+                <p class="text-[10px] uppercase tracking-[0.25em] text-morandi-roseDark font-medium">Page 02</p>
+                <h1 class="text-3xl text-morandi-slate font-light mt-1">Research Process</h1>
+            </div>
+
+            <div class="space-y-8 text-morandi-slate/90 font-light text-sm md:text-base leading-relaxed">
+                <!-- Basic Meta Card -->
+                <div class="glass-card p-6 rounded-none border-l-2 border-l-morandi-roseDark space-y-2">
+                    <p class="text-[10px] uppercase tracking-wider text-morandi-roseDark font-semibold">Project Type</p>
+                    <p class="text-morandi-slate text-lg font-light">UHP Signature Work — Independent Research Paper</p>
+                </div>
+
+                <!-- Steps Timeline -->
+                <div class="space-y-12 relative border-l border-morandi-200 pl-6 ml-4">
+                    
+                    <!-- Timeline Item 1 -->
+                    <div id="proc-overview" class="relative group">
+                        <span class="absolute -left-[30px] top-1.5 w-2 h-2 rounded-full bg-morandi-100 border border-morandi-300 group-hover:bg-morandi-roseDark transition-colors duration-300"></span>
+                        <div class="space-y-2">
+                            <h3 class="text-xs uppercase tracking-widest text-morandi-blueDark font-medium">1. Project Overview & Origins</h3>
+                            <p>
+                                This project began with a question that emerged from my involvement in an international arbitration panel event held during <strong class="text-morandi-blueDark font-normal">California International Arbitration Week</strong> in March 2026. 
+                            </p>
+                            <p>
+                                The panel, co-organized with <strong class="text-morandi-blueDark font-normal">Professor Marcus S. Quintanilla of the UC Davis School of Law</strong>, examined how trade secret disputes are handled in international arbitration proceedings. I wrote the original script for the panel presentation, and the experience made me want to explore the underlying legal questions more rigorously.
+                            </p>
+                        </div>
+                    </div>
+
+                    <!-- Timeline Item 2 -->
+                    <div id="proc-research" class="relative group">
+                        <span class="absolute -left-[30px] top-1.5 w-2 h-2 rounded-full bg-morandi-100 border border-morandi-300 group-hover:bg-morandi-roseDark transition-colors duration-300"></span>
+                        <div class="space-y-2">
+                            <h3 class="text-xs uppercase tracking-widest text-morandi-blueDark font-medium">2. Preparation & Literature Review</h3>
+                            <p>
+                                I began by identifying the central tension I wanted to examine: <span class="italic text-morandi-roseDark">the paradox that arbitration's confidentiality, which makes it attractive for trade secret holders, simultaneously constrains their ability to gather the evidence needed to prove misappropriation.</span>
+                            </p>
+                            <p>
+                                I reviewed primary legal materials including the <strong class="text-morandi-blueDark font-normal">Federal Arbitration Act</strong>, the <strong class="text-morandi-blueDark font-normal">IBA Rules on the Taking of Evidence</strong>, the <strong class="text-morandi-blueDark font-normal">New York Convention</strong>, and AAA Employment Rules, as well as secondary sources and case law on vacatur proceedings.
+                            </p>
+                        </div>
+                    </div>
+
+                    <!-- Timeline Item 3 -->
+                    <div id="proc-framework" class="relative group">
+                        <span class="absolute -left-[30px] top-1.5 w-2 h-2 rounded-full bg-morandi-100 border border-morandi-300 group-hover:bg-morandi-roseDark transition-colors duration-300"></span>
+                        <div class="space-y-2">
+                            <h3 class="text-xs uppercase tracking-widest text-morandi-blueDark font-medium">3. Research & Writing Structure</h3>
+                            <p>
+                                I structured the paper around eight sections, moving from the mechanics of how trade secret claims enter arbitration, through a comparative analysis of litigation and arbitration evidentiary standards, to an original four-part evidence strategy framework. 
+                            </p>
+                            <p>
+                                The paper draws on a hypothetical scenario involving a technology startup and a departing co-founder, which I developed for the original panel presentation and refined for this paper.
+                            </p>
+                        </div>
+                    </div>
+
+                    <!-- Timeline Item 4 -->
+                    <div class="relative group">
+                        <span class="absolute -left-[30px] top-1.5 w-2 h-2 rounded-full bg-morandi-100 border border-morandi-300 group-hover:bg-morandi-roseDark transition-colors duration-300"></span>
+                        <div class="space-y-2">
+                            <h3 class="text-xs uppercase tracking-widest text-morandi-blueDark font-medium">4. Presentation & Ultimate Impact</h3>
+                            <p>
+                                The research was initially presented in panel format at California International Arbitration Week in March 2026, before being developed into this full-length academic paper.
+                            </p>
+                            <p>
+                                This project has deepened my understanding of international dispute resolution and confirmed my intention to pursue a legal career in this field. It has also given me practical experience conducting legal research, constructing legal arguments, and writing in the style expected of legal scholarship.
+                            </p>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </section>
+
+        <!-- ================= PAGE 3: PRODUCT ================= -->
+        <section id="product" class="space-y-12 scroll-mt-28">
+            <div class="border-b border-morandi-200 pb-4">
+                <p class="text-[10px] uppercase tracking-[0.25em] text-morandi-roseDark font-medium">Page 03</p>
+                <h1 class="text-3xl text-morandi-slate font-light mt-1">Research Products</h1>
+            </div>
+
+            <div class="space-y-12">
+                
+                <!-- HIGH-END, DIRECT INTERACTIVE LINK BLOCK -->
+                <div id="prod-paper" class="bg-white border border-morandi-200/60 p-8 rounded-none space-y-6">
+                    <div class="flex items-center space-x-3 text-xs uppercase tracking-widest text-morandi-roseDark font-medium">
+                        <span>Signature Work Paper</span>
+                    </div>
+                    
+                    <div class="space-y-4">
+                        <h2 class="text-2xl text-morandi-slate leading-snug font-normal">
+                            Secrecy and Proof: Navigating the Evidentiary Gap in International Trade Secret Arbitration
+                        </h2>
+                        
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-2 text-xs text-morandi-slate/70 pt-2 pb-4 border-t border-morandi-100">
+                            <p><strong>Author:</strong> Yunhan Wang</p>
+                            <p><strong>Date:</strong> June 2026</p>
+                            <p class="md:col-span-2"><strong>Supervised by:</strong> Professor Marcus S. Quintanilla, J.D., UC Davis School of Law</p>
+                        </div>
+
+                        <p class="text-xs text-morandi-slate/75 leading-relaxed font-light">
+                            Below is the direct link to the original complete research paper. You can click to view or download the pristine, fully-formatted academic PDF document from your digital library:
+                        </p>
+                        
+                        <!-- Pure, Elegant Text Hyperlink with subtle hover arrow -->
+                        <div class="pt-2">
+                            <!-- 
+                                FOR GITHUB PAGES DEPLOYMENT: 
+                                - Place your "毕业论文.docx" or its exported "Thesis_Paper.pdf" in your GitHub repository's root folder.
+                                - Change the href attribute below to exact matching filename: e.g., href="Thesis_Paper.pdf" or href="毕业论文.docx" 
+                                - This enables direct download on user click.
+                            -->
+                            <a href="毕业论文.docx" target="_blank" class="inline-flex items-center space-x-2 text-sm tracking-wider text-morandi-roseDark hover:text-morandi-slate border-b border-morandi-roseDark/40 hover:border-morandi-slate pb-0.5 transition-all duration-300 font-normal italic font-serif">
+                                <span>Read the Complete Academic Thesis (Word/PDF Document Link)</span>
+                                <svg class="w-4 h-4 shrink-0" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M13.5 6H5.25A2.25 2.25 0 003 8.25v10.5A2.25 2.25 0 005.25 21h10.5A2.25 2.25 0 0018 18.75V10.5m-10.5 6L21 3m0 0h-5.25M21 3v5.25"></path></svg>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Visual Summary Component (Interactive Showcase) -->
+                <div id="prod-summary" class="bg-white border border-morandi-200/60 p-8 rounded-none space-y-6">
+                    <div class="flex items-center space-x-3 text-xs uppercase tracking-widest text-morandi-roseDark font-medium">
+                        <span>Interactive Visual Summary</span>
+                    </div>
+
+                    <div>
+                        <p class="text-xs md:text-sm text-morandi-slate/80 font-light leading-relaxed">
+                            Below is an interactive guide summarizing the core legal arguments and structural frameworks presented in Yunhan's full-length research paper. Click through the tabs below to explore.
+                        </p>
+                    </div>
+
+                    <!-- Interactive Switch Cards -->
+                    <div class="space-y-4">
+                        <!-- Tab Headers -->
+                        <div class="grid grid-cols-2 md:grid-cols-4 gap-2 text-[10px] uppercase tracking-widest text-center font-medium">
+                            <button onclick="switchSummaryTab('paradox')" id="tab-paradox" class="py-2.5 bg-morandi-blue text-white rounded-none transition-all duration-300">The Core Paradox</button>
+                            <button onclick="switchSummaryTab('gateways')" id="tab-gateways" class="py-2.5 bg-morandi-100 text-morandi-slate hover:bg-morandi-200/80 transition-all duration-300">Three Gateways</button>
+                            <button onclick="switchSummaryTab('layered')" id="tab-layered" class="py-2.5 bg-morandi-100 text-morandi-slate hover:bg-morandi-200/80 transition-all duration-300">Layered Rules</button>
+                            <button onclick="switchSummaryTab('strategy')" id="tab-strategy" class="py-2.5 bg-morandi-100 text-morandi-slate hover:bg-morandi-200/80 transition-all duration-300">Evidence Strategy</button>
+                        </div>
+
+                        <!-- Dynamic Content Box -->
+                        <div class="border border-morandi-200 bg-morandi-50/40 p-6 rounded-none min-h-[220px] flex flex-col justify-between">
+                            <div id="summary-content" class="space-y-3">
+                                <!-- Default (Paradox) -->
+                                <h4 class="text-sm uppercase tracking-wider text-morandi-blueDark font-bold" id="summary-title">The Evidentiary Core Paradox</h4>
+                                <p class="text-xs md:text-sm text-morandi-slate/90 leading-relaxed font-light" id="summary-desc">
+                                    Trade secret holders choose international arbitration primarily because of its confidential nature, preventing intellectual property exposure to market competitors. However, this private venue limits the tribunal's compulsive power to order broad discovery, creating a critical hurdle when a claimant must prove secret misappropriation by bad-faith adversaries.
+                                </p>
+                            </div>
+                            <div class="border-t border-morandi-200/60 pt-4 mt-6 flex justify-between items-center text-[10px] text-morandi-blue/80">
+                                <span>Academic Theme: Secrecy vs. Proof Scope</span>
+                                <span class="text-morandi-roseDark font-medium">Paper Section III & IV</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Résumé/CV Box -->
+                <div id="prod-cv" class="bg-white border border-morandi-200/60 p-8 rounded-none space-y-6">
+                    <div class="flex items-center space-x-3 text-xs uppercase tracking-widest text-morandi-roseDark font-medium">
+                        <span>Résumé / Curriculum Vitae</span>
+                    </div>
+
+                    <!-- Professional CV Content Box (Verbatim from docx upload) -->
+                    <div class="border border-morandi-200 p-8 bg-white text-[11px] md:text-xs text-morandi-slate space-y-8 font-light relative">
+                        
+                        <!-- Header Info -->
+                        <div class="text-center space-y-1 pb-6 border-b border-morandi-200">
+                            <h3 class="text-2xl text-morandi-slate tracking-wider font-normal">Yunhan (Flora) Wang</h3>
+                            <p class="text-[10px] text-morandi-blueDark">
+                                +1 530-761-2634 <span class="mx-1.5">•</span> volwang@ucdavis.edu <span class="mx-1.5">•</span> Davis, CA
+                            </p>
+                        </div>
+
+                        <!-- Education Section -->
+                        <div class="space-y-3">
+                            <h4 class="text-[11px] uppercase tracking-widest text-morandi-roseDark font-bold border-b border-morandi-100 pb-1">Education</h4>
+                            <div class="flex justify-between items-start">
+                                <div>
+                                    <p class="font-bold text-morandi-slate">UNIVERSITY OF CALIFORNIA, DAVIS</p>
+                                    <p class="text-morandi-slate/70">Major: Economics (Bachelor of Arts) | Minor: Statistics</p>
+                                    <p class="text-morandi-slate/70">GPA: 3.95/4.0; University Honors Program, Dean’s List, Co-founder of Mandarin Debate Club</p>
+                                </div>
+                                <p class="text-right text-morandi-slate/60 font-medium whitespace-nowrap">Sept 2023 – Dec 2026 (Expected)</p>
+                            </div>
+                        </div>
+
+                        <!-- Relevant Coursework -->
+                        <div class="space-y-2">
+                            <h4 class="text-[11px] uppercase tracking-widest text-morandi-roseDark font-bold border-b border-morandi-100 pb-1">Relevant Coursework</h4>
+                            <p class="text-morandi-slate/70 leading-relaxed italic">
+                                Econometrics & Analysis of Economic Data • Theory of Games & Strategic Behavior • Statistical Data Science • Money, Banks, & Financial Institutions • Legal Writing • Intermediate Macro & Micro Economics
+                            </p>
+                        </div>
+
+                        <!-- Experience Section -->
+                        <div class="space-y-5">
+                            <h4 class="text-[11px] uppercase tracking-widest text-morandi-roseDark font-bold border-b border-morandi-100 pb-1">Experience</h4>
+                            
+                            <!-- Exp 1 -->
+                            <div class="space-y-1.5">
+                                <div class="flex justify-between items-start font-bold text-morandi-slate">
+                                    <p>Prof. Marcus Salvato Quintanilla, UC Davis School of Law</p>
+                                    <p class="font-medium text-morandi-slate/50 text-right">April 2024 – Present</p>
+                                </div>
+                                <p class="text-morandi-roseDark font-normal italic">Research Assistant</p>
+                                <ul class="list-disc pl-4 space-y-1 text-morandi-slate/70">
+                                    <li>Conducted comparative research on Eastern and Western Natural Law; co-developed a syllabus and reading list for a Fall 2027 course.</li>
+                                    <li>Assisted with proofreading and timeline construction for anonymized moot court materials.</li>
+                                </ul>
+                            </div>
+
+                            <!-- Exp 2 -->
+                            <div class="space-y-1.5">
+                                <div class="flex justify-between items-start font-bold text-morandi-slate">
+                                    <p>EY (Ernst & Young) DigitWave Technology (Shanghai) Co., Ltd.</p>
+                                    <p class="font-medium text-morandi-slate/50 text-right">June 2025 – Aug 2025</p>
+                                </div>
+                                <p class="text-morandi-roseDark font-normal italic">Business Analysis Intern, Core Business Services Department</p>
+                                <ul class="list-disc pl-4 space-y-1 text-morandi-slate/70">
+                                    <li>Supported data-access governance: built new permission matrix for 100+ users after FY re-org.</li>
+                                    <li>Standardized naming convention and wrote a Python script to auto-map permissions.</li>
+                                    <li>Translated internal data security documents and redesigned Chinese process flows into English permission matrices for use by the Hong Kong team; published firm-wide.</li>
+                                </ul>
+                            </div>
+
+                            <!-- Exp 3 -->
+                            <div class="space-y-1.5">
+                                <div class="flex justify-between items-start font-bold text-morandi-slate">
+                                    <p>UC Davis Undergraduate Admissions Center</p>
+                                    <p class="font-medium text-morandi-slate/50 text-right">Nov 2024 – Present</p>
+                                </div>
+                                <p class="text-morandi-roseDark font-normal italic">Campus Tour Guide & Student Assistant</p>
+                                <ul class="list-disc pl-4 space-y-1 text-morandi-slate/70">
+                                    <li>Delivered engaging campus tours to prospective students and families; helped them connect with on-campus resources while providing multilingual assistance and personalized guidance to applicants.</li>
+                                    <li>Memorized and delivered a 50-page tour script; completed over 40 hours of official training and passed the certification process as the only non-native English speaker in the cohort.</li>
+                                </ul>
+                            </div>
+
+                            <!-- Exp 4 -->
+                            <div class="space-y-1.5">
+                                <div class="flex justify-between items-start font-bold text-morandi-slate">
+                                        <p>Shanghai Orient Securities Capital Investment Co., Ltd.</p>
+                                    <p class="font-medium text-morandi-slate/50 text-right">June 2024 – Aug 2024</p>
+                                </div>
+                                <p class="text-morandi-roseDark font-normal italic">Advisory Intern, Venture Capital Department</p>
+                                <ul class="list-disc pl-4 space-y-1 text-morandi-slate/70">
+                                    <li>Produced two market analysis reports on the beverage and materials industries.</li>
+                                    <li>Conducted on-site visits to three potential portfolio companies, reviewed financial statements, and interviewed upstream and downstream partners to support comprehensive investment due diligence.</li>
+                                    <li>Assisted in ESG workshops, supporting legal risk analysis and post-investment planning.</li>
+                                </ul>
+                            </div>
+                        </div>
+
+                        <!-- Relevant Experience Section from original CV -->
+                        <div class="space-y-4 pt-4 border-t border-morandi-100">
+                            <h4 class="text-[11px] uppercase tracking-widest text-morandi-roseDark font-bold">Relevant Experience</h4>
+                            
+                            <div class="space-y-1.5">
+                                <div class="flex justify-between items-start font-bold text-morandi-slate">
+                                    <p>Intellectual Property Confidentiality in Arbitral Proceedings</p>
+                                    <p class="font-medium text-morandi-slate/50 text-right">Dec 2025 – May 2026</p>
+                                </div>
+                                <p class="text-morandi-slate/70">
+                                    Analyzed the protection of IP confidentiality in international arbitration for a professor-led panel at 2026 International Arbitration Week, focusing on the permissible scope of discovery and the feasibility of judicial intervention or post-award challenges when disclosure obligations are excessive.
+                                </p>
+                            </div>
+
+                            <div class="space-y-1.5">
+                                <div class="flex justify-between items-start font-bold text-morandi-slate">
+                                    <p>Economic Motivations behind Eugenic Sterilization Policies</p>
+                                    <p class="font-medium text-morandi-slate/50 text-right">Jan 2025 – March 2025</p>
+                                </div>
+                                <p class="text-morandi-slate/70">
+                                    Researched the economic incentives behind eugenic sterilization policies, analyzing 5 landmark cases across an 80-year span to explore the cost-benefit arguments in historical public health reforms.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+
+            </div>
+        </section>
+
+        <!-- ================= PAGE 4: REFLECTION ================= -->
+        <section id="reflection" class="space-y-10 scroll-mt-28">
+            <div class="border-b border-morandi-200 pb-4">
+                <p class="text-[10px] uppercase tracking-[0.25em] text-morandi-roseDark font-medium">Page 04</p>
+                <h1 class="text-3xl text-morandi-slate font-light mt-1">Academic Reflection</h1>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8 text-morandi-slate/90 font-light text-sm leading-relaxed">
+                
+                <!-- Box 1 -->
+                <div id="ref-positives" class="bg-white border border-morandi-200/60 p-6 rounded-none space-y-3">
+                    <span class="text-[10px] uppercase tracking-wider text-morandi-rose font-semibold">What I Would Keep the Same</span>
+                    <h3 class="text-sm font-bold text-morandi-slate">The Power of Concrete Hypotheticals</h3>
+                    <p>
+                        I would keep the decision to ground the paper in a concrete hypothetical scenario. Having a running factual situation to return to throughout the analysis made the legal arguments more accessible and gave the paper a narrative thread that I think strengthened it considerably.
+                    </p>
+                </div>
+
+                <!-- Box 2 -->
+                <div id="ref-changes" class="bg-white border border-morandi-200/60 p-6 rounded-none space-y-3">
+                    <span class="text-[10px] uppercase tracking-wider text-morandi-rose font-semibold">What I Would Change</span>
+                    <h3 class="text-sm font-bold text-morandi-slate">Deeper Empirical Scope</h3>
+                    <p>
+                        If I were starting over, I would begin the research phase earlier and allocate more time to the case law analysis sections. The vacatur case law in particular is a rich area that I was only able to survey at a high level, and a more comprehensive empirical analysis would have strengthened the paper's evidentiary claims.
+                    </p>
+                </div>
+
+                <!-- Box 3 -->
+                <div class="bg-white border border-morandi-200/60 p-6 rounded-none space-y-3">
+                    <span class="text-[10px] uppercase tracking-wider text-morandi-rose font-semibold">UHP Project Recommendation</span>
+                    <h3 class="text-sm font-bold text-morandi-slate">Would I Recommend this Project?</h3>
+                    <p>
+                        Yes, without hesitation, particularly for students who are considering law school or a career in a field adjacent to law. The process of conducting independent legal research, constructing an argument across twenty pages, and presenting it to an audience of practitioners forced me to develop skills that no coursework had previously demanded of me. The difficulty was real, but so was the reward.
+                    </p>
+                </div>
+
+                <!-- Box 4 -->
+                <div id="ref-future" class="bg-white border border-morandi-200/60 p-6 rounded-none space-y-3">
+                    <span class="text-[10px] uppercase tracking-wider text-morandi-rose font-semibold">Undergrad Impact</span>
+                    <h3 class="text-sm font-bold text-morandi-slate">Influence on Personal Development</h3>
+                    <p>
+                        This project confirmed for me that legal scholarship is something I want to pursue seriously. It gave me a writing sample I am genuinely proud of, a deeper understanding of international arbitration as a field, and a clearer sense of the kind of lawyer I want to become. It also taught me that the most interesting legal questions are often the ones that sit at the intersection of competing values, and that the most honest scholarship acknowledges that tension rather than pretending to resolve it.
+                    </p>
+                </div>
+
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-white border-t border-morandi-200 py-8 px-6 mt-16">
+        <div class="max-w-5xl mx-auto flex flex-col md:flex-row justify-between items-center text-morandi-rose text-xs tracking-wider">
+            <p>Yunhan Wang — University of California, Davis — June 2026</p>
+            <p class="mt-2 md:mt-0 uppercase text-[10px] text-morandi-blueDark">UHP Signature Work Portfolio • Times New Roman Typography</p>
+        </div>
+    </footer>
+
+
+    <!-- ================== SCRIPTS & INTERACTION ================== -->
+    <script>
+        // Custom Cursor movement and delayed spring logic
+        const cursor = document.getElementById('custom-cursor');
+        const cursorRing = document.getElementById('custom-cursor-ring');
+
+        document.addEventListener('mousemove', (e) => {
+            const posX = e.clientX;
+            const posY = e.clientY;
+
+            cursor.style.left = posX + 'px';
+            cursor.style.top = posY + 'px';
+
+            cursorRing.style.transform = `translate(calc(${posX}px - 50%), calc(${posY}px - 50%))`;
+        });
+
+        // Add Hover reactions for UI components
+        const interactiveElements = document.querySelectorAll('a, button, select, input, textarea');
+        interactiveElements.forEach(el => {
+            el.addEventListener('mouseenter', () => {
+                cursor.style.width = '12px';
+                cursor.style.height = '12px';
+                cursor.style.backgroundColor = 'rgba(158, 123, 123, 0.4)';
+                cursorRing.style.borderColor = '#9e7b7b';
+            });
+            el.addEventListener('mouseleave', () => {
+                cursor.style.width = '6px';
+                cursor.style.height = '6px';
+                cursor.style.backgroundColor = '#9e7b7b';
+                cursorRing.style.borderColor = 'rgba(158, 123, 123, 0.4)';
+            });
+        });
+
+        // Mobile dropdown toggle
+        const mobileMenuBtn = document.getElementById('mobile-menu-btn');
+        const mobileMenu = document.getElementById('mobile-menu');
+        const menuIcon = document.getElementById('menu-icon');
+
+        mobileMenuBtn.addEventListener('click', () => {
+            if(mobileMenu.classList.contains('hidden')) {
+                mobileMenu.classList.remove('hidden');
+                menuIcon.setAttribute('d', 'M6 18L18 6M6 6l12 12');
+            } else {
+                mobileMenu.classList.add('hidden');
+                menuIcon.setAttribute('d', 'M4 6h16M4 12h16m-7 6h7');
+            }
+        });
+
+        // Section Interactive Tabs for Summary
+        function switchSummaryTab(tabId) {
+            const tabs = ['paradox', 'gateways', 'layered', 'strategy'];
+            tabs.forEach(t => {
+                const btn = document.getElementById(`tab-${t}`);
+                if (t === tabId) {
+                    btn.className = "py-2.5 bg-morandi-blue text-white rounded-none transition-all duration-300";
+                } else {
+                    btn.className = "py-2.5 bg-morandi-100 text-morandi-slate hover:bg-morandi-200/80 transition-all duration-300";
+                }
+            });
+
+            const titleEl = document.getElementById('summary-title');
+            const descEl = document.getElementById('summary-desc');
+
+            if (tabId === 'paradox') {
+                titleEl.textContent = "The Evidentiary Core Paradox";
+                descEl.textContent = "Trade secret holders choose international arbitration primarily because of its confidential nature, preventing intellectual property exposure to market competitors. However, this private venue limits the tribunal's compulsive power to order broad discovery, creating a critical hurdle when a claimant must prove secret misappropriation by bad-faith adversaries.";
+            } else if (tabId === 'gateways') {
+                titleEl.textContent = "Three Contractual Gateways";
+                descEl.textContent = "To bridge this gap, parties must construct robust gateways within pre-dispute agreements. Yunhan proposes relying on (1) Explicit Arbitration Clauses specifying discovery parameters, (2) Layered Pre-dispute Non-Disclosure Agreements, and (3) Customized procedural terms within the trade secret transaction papers themselves.";
+            } else if (tabId === 'layered') {
+                titleEl.textContent = "The Layered Rules Structure";
+                descEl.textContent = "A cohesive integration of multiple regulatory layers is critical. The framework establishes a unified workflow bridging local law (such as the Federal Arbitration Act - FAA Section 7 subpoena powers), international model standards (the IBA Rules on the Taking of Evidence), and institutional dispute procedures.";
+            } else if (tabId === 'strategy') {
+                titleEl.textContent = "Four-Part Evidence Strategy Framework";
+                descEl.textContent = "The pinnacle outcome of Yunhan's research: a structured framework comprising (1) Proactive forensic preservation protocols, (2) Strict third-party auditing pipelines under neutral expert supervision, (3) Safe-harbor pre-deposition frameworks, and (4) Structured post-award enforcement mitigation models to protect proprietary content.";
+            }
+        }
+    </script>
+</body>
+</html>
